@@ -1,3 +1,4 @@
+
 package compiler;
 /**
  * This class encapsulates a basic grammar test.
@@ -17,6 +18,12 @@ public class CompilerTest{
 
 
     public static void main(String[] args){
+    	
+    	if(args.length < 1) {
+    		System.out.println("Usage: java CompilerTest <input_file>");
+    		return;
+    	}
+    	
         CharStream input;
         KnightCodeLexer lexer;
         CommonTokenStream tokens;
