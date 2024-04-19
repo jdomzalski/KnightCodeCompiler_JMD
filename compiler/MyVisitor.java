@@ -20,8 +20,6 @@
 
 package compiler; 
 
- 
-
 // Imports 
 
 import java.util.HashMap; 
@@ -36,21 +34,16 @@ import org.objectweb.asm.MethodVisitor;
 
 import org.objectweb.asm.Opcodes; 
 
- 
-
 import lexparse.KnightCodeBaseVisitor; 
 
 import lexparse.KnightCodeParser; 
 
 import lexparse.KnightCodeParser.AdditionContext; 
-
  
 
 // Class type needs to be byte so we can have methods where bytecode operations occur 
 
 public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{ 
-
-	 
 
 	// Creating a HashMap to store the variables visited 
 
@@ -62,9 +55,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 	// Creating the MethodVisitor 
 
-	public MethodVisitor methodVisitor; 
-
-	 
+	public MethodVisitor methodVisitor; 	 
 
 	/* 
 
@@ -78,13 +69,9 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS); 
 
-		 
-
 		// Standard visit and setup process of the class 
 
 		classWriter.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, "", null, "java/lang/Object", null); 
-
-		 
 
 		// The Method Visitor visiting the main method 
 
@@ -93,9 +80,6 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 		methodVisitor.visitCode();		 
 
 	} 
-
-	 
-
 	/* 
 
 	 * Visiting the entry method that visits the contents of a file 
@@ -120,31 +104,21 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		methodVisitor.visitInsn(Opcodes.RET); 
 
-		 
-
 		// Sets the maximum sizes of the stack/local variables 
 
 		methodVisitor.visitMaxs(0, 0); 
 
-		 
-
 		// Ending method 
 
 		methodVisitor.visitEnd(); 
-
 		 
-
 		// Get the bytecode generated 
 
 		classWriter.visitEnd(); 
 
 		return classWriter.toByteArray(); 
 
-		 
-
 	} 
-
-	 
 
 	/* 
 
@@ -186,8 +160,6 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 			} 
 
-			 
-
 		} 
 
 		// Returning 
@@ -195,8 +167,6 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 		return null; 
 
 	} 
-
-	 
 
 	/* 
 
@@ -216,29 +186,21 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		int index = (int) variables.get(name); 
 
-		 
-
 		// Visiting the expression and getting the assignment value 
 
 		// Generating bytecode needed to compute the value 
 
 		visit(ctx.expr()); 
 
-	 
-
 		// Using bytecode to store value into the variable 
 
 		methodVisitor.visitVarInsn(Opcodes.ISTORE, index); 
-
-		 
 
 		// Returning 
 
 		return null; 
 
 	} 
-
-	 
 
 	/* 
 
@@ -268,9 +230,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 			System.out.println(string); 
 
-		} 
-
-		 
+		} 	 
 
 		// If we are not printing a string, that means we are printing a variable 
 
@@ -307,9 +267,6 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 		return null; 
 
 	} 
-
-	 
-
 	/* 
 
 	 * Performing addition using bytecode 
@@ -326,9 +283,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		// Getting the value of the second expression from the stack 
 
-		visit(ctx.expr(1)); 
-
-		 
+		visit(ctx.expr(1)); 		 
 
 		// Performing the integer addition in bytecode 
 
@@ -341,8 +296,6 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 		return null; 
 
 	} 
-
-	 
 
 	/* 
 
@@ -374,9 +327,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		return null; 
 
-	} 
-
-	 
+	}  
 
 	/* 
 
@@ -408,9 +359,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		return null; 
 
-	} 
-
-	 
+	}  
 
 	/* 
 
@@ -436,15 +385,11 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		methodVisitor.visitInsn(Opcodes.IDIV); 
 
-		 
-
 		// Returning 
 
 		return null; 
 
 	} 
-
-	 
 
 	/* 
 
@@ -538,9 +483,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 			break; 
 
-		} 
-
-		 
+		} 	 
 
 		// Using bytecode to push a 0 or 1 onto the stack 
 
@@ -856,19 +799,14 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		Label end = new Label(); 
 
-		 
-
 		// Bytecode that begins loop execution 
 
 		methodVisitor.visitJumpInsn(Opcodes.GOTO, condition); 
-
-		 
+	 
 
 		// Start 
 
 		methodVisitor.visitLabel(start); 
-
-		 
 
 		// Bytecode to print a test message. Message should be printed each time the loop runs 
 
@@ -877,8 +815,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 		methodVisitor.visitLdcInsn("This is a string."); 
 
 		methodVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false); 
-
-		 
+	 
 
 		// Decreasing the value of the loop and checking if we are finished or not 
 
@@ -888,9 +825,7 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 
 		methodVisitor.visitInsn(Opcodes.ISUB); 
 
-		methodVisitor.visitVarInsn(Opcodes.ISTORE, index); 
-
-		 
+		methodVisitor.visitVarInsn(Opcodes.ISTORE, index); 	 
 
 		// Checking the condition 
 
@@ -899,22 +834,18 @@ public class MyVisitor extends KnightCodeBaseVisitor<byte[]>{
 		methodVisitor.visitVarInsn(Opcodes.ILOAD, index); 
 
 		methodVisitor.visitJumpInsn(Opcodes.IFGT, start); 
-
 		 
 
 		// Ending 
 
 		methodVisitor.visitLabel(end); 
 
-		 
-
 		// Returning 
 
 		return null; 
 
 	} 
-
-	 
+ 
 
 } // End class 
 
